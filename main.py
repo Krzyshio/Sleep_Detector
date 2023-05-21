@@ -5,7 +5,7 @@ from imutils import face_utils
 import pygame
 import os
 import time
-
+from plyer import notification
 
 def eye_aspect_ratio(eye):
     A = np.linalg.norm(eye[1] - eye[5])
@@ -14,9 +14,8 @@ def eye_aspect_ratio(eye):
     ear = (A + B) / (2.0 * C)
     return ear
 
-
 EYE_CLOSED_TIME_REQUIRED = 0.3
-EYE_OPEN_EAR = 0.3  # Assume this value for fully open eyes.
+EYE_OPEN_EAR = 0.3
 
 last_time_eyes_closed = None
 alarm_playing = False
@@ -79,6 +78,13 @@ while True:
             if not alarm_playing:
                 alarm_sound.play()
                 alarm_playing = True
+
+                notification.notify(
+                    title="Wake Up!",
+                    message="Your eyes have been closed for too long!",
+                    app_icon=None,
+                    timeout=10,
+                )
     else:
         last_time_eyes_closed = None
         if alarm_playing:
